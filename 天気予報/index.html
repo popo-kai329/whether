@@ -69,6 +69,9 @@
         }
 
         function getWeatherIcon(weather) {
+            if (!weather) { // weatherがundefinedまたはnullであればアイコンを返さない
+                return '❓'; // 不明な天気
+            }
             if (weather.includes('晴')) {
                 return '☀️'; // 晴れ
             } else if (weather.includes('雨')) {
@@ -82,41 +85,32 @@
             }
         }
 
+
         function displayWeather(data) {
-            weatherContainer.innerHTML = '';
+        weatherContainer.innerHTML = '';
 
-            const areaName = data[0].timeSeries[0].areas[0].area.name; // 地域名
-            const forecasts = data[0].timeSeries[0].areas[0];
-            const temperatures = data[0].timeSeries[2].areas[0].temps; // 気温情報
+        const areaName = data[0].timeSeries[0].areas[0].area.name; // 地域名
+        const forecasts = data[0].timeSeries[0].areas[0];
+        const temperatures = data[0].timeSeries[2].areas[0].temps; // 気温情報
 
-            const todayWeather = forecasts.weathers[0]; // 今日の天気
-            const tomorrowWeather = forecasts.weathers[1]; // 明日の天気
-            const todayTemp = temperatures[0]; // 今日の気温
-            const tomorrowTemp = temperatures[1]; // 明日の気温
+        const weatherDays = ["今日", "明日", "明後日"];
 
-            const todayIcon = getWeatherIcon(todayWeather);
-            const tomorrowIcon = getWeatherIcon(tomorrowWeather);
+        for (let i = 0; i < 3; i++) {
+        const weather = forecasts.weathers[i] || "データなし"; // 天気データがない場合は"データなし"を表示
+        const temp = temperatures[i] || "データなし"; // 気温データがない場合は"データなし"を表示
+        const weatherIcon = getWeatherIcon(weather);
 
-            // 今日の天気
-            const todayCard = document.createElement('div');
-            todayCard.className = 'weather-card';
-            todayCard.innerHTML = `
-                <h2>${areaName} - 今日の天気</h2>
-                <p>${todayIcon} ${todayWeather}</p>
-                <p>気温: ${todayTemp}℃</p>
-            `;
-            weatherContainer.appendChild(todayCard);
+        const weatherCard = document.createElement('div');
+        weatherCard.className = 'weather-card';
+        weatherCard.innerHTML = `
+            <h2>${areaName} - ${weatherDays[i]}の天気</h2>
+            <p>${weatherIcon} ${weather}</p>
+            <p>気温: ${temp}℃</p>
+        `;
+        weatherContainer.appendChild(weatherCard);
+    }
+}
 
-            // 明日の天気
-            const tomorrowCard = document.createElement('div');
-            tomorrowCard.className = 'weather-card';
-            tomorrowCard.innerHTML = `
-                <h2>${areaName} - 明日の天気</h2>
-                <p>${tomorrowIcon} ${tomorrowWeather}</p>
-                <p>気温: ${tomorrowTemp}℃</p>
-            `;
-            weatherContainer.appendChild(tomorrowCard);
-        }
 
         // 地域選択時のイベント
         regionSelect.addEventListener('change', (e) => {
@@ -129,3 +123,4 @@
     </script>
 </body>
 </html>
+
