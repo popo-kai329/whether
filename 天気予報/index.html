@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f8ff;
+            background-color: aquamarine;
         }
         .container {
             max-width: 600px;
@@ -89,23 +89,33 @@
             const forecasts = data[0].timeSeries[0].areas[0];
             const temperatures = data[0].timeSeries[2].areas[0].temps; // 気温情報
 
-            const weatherDays = ["今日", "明日", "明後日"];
+            const todayWeather = forecasts.weathers[0]; // 今日の天気
+            const tomorrowWeather = forecasts.weathers[1]; // 明日の天気
+            const todayTemp = temperatures[0]; // 今日の気温
+            const tomorrowTemp = temperatures[1]; // 明日の気温
 
-            for (let i = 0; i < 3; i++) {
-                const weather = forecasts.weathers[i]; // 各日の天気
-                const minTemp = temperatures[2 + i * 2]; // 各日の最低気温
-                const maxTemp = temperatures[1 + i * 2]; // 各日の最高気温
-                const weatherIcon = getWeatherIcon(weather);
+            const todayIcon = getWeatherIcon(todayWeather);
+            const tomorrowIcon = getWeatherIcon(tomorrowWeather);
 
-                const weatherCard = document.createElement('div');
-                weatherCard.className = 'weather-card';
-                weatherCard.innerHTML = `
-                    <h2>${areaName} - ${weatherDays[i]}の天気</h2>
-                    <p>${weatherIcon} ${weather}</p>
-                    <p>最高気温: ${maxTemp}℃ / 最低気温: ${minTemp}℃</p>
-                `;
-                weatherContainer.appendChild(weatherCard);
-            }
+            // 今日の天気
+            const todayCard = document.createElement('div');
+            todayCard.className = 'weather-card';
+            todayCard.innerHTML = `
+                <h2>${areaName} - 今日の天気</h2>
+                <p>${todayIcon} ${todayWeather}</p>
+                <p>気温: ${todayTemp}℃</p>
+            `;
+            weatherContainer.appendChild(todayCard);
+
+            // 明日の天気
+            const tomorrowCard = document.createElement('div');
+            tomorrowCard.className = 'weather-card';
+            tomorrowCard.innerHTML = `
+                <h2>${areaName} - 明日の天気</h2>
+                <p>${tomorrowIcon} ${tomorrowWeather}</p>
+                <p>気温: ${tomorrowTemp}℃</p>
+            `;
+            weatherContainer.appendChild(tomorrowCard);
         }
 
         // 地域選択時のイベント
