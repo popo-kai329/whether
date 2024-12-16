@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: aquamarine;
+            background-color: #f0f8ff;
         }
         .container {
             max-width: 600px;
@@ -91,8 +91,10 @@
 
             const todayWeather = forecasts.weathers[0]; // 今日の天気
             const tomorrowWeather = forecasts.weathers[1]; // 明日の天気
-            const todayTemp = temperatures[0]; // 今日の気温
-            const tomorrowTemp = temperatures[1]; // 明日の気温
+            const todayMinTemp = temperatures[2]; // 今日の最低気温
+            const todayMaxTemp = temperatures[1]; // 今日の最高気温
+            const tomorrowMinTemp = temperatures[4]; // 明日の最低気温
+            const tomorrowMaxTemp = temperatures[3]; // 明日の最高気温
 
             const todayIcon = getWeatherIcon(todayWeather);
             const tomorrowIcon = getWeatherIcon(tomorrowWeather);
@@ -103,7 +105,7 @@
             todayCard.innerHTML = `
                 <h2>${areaName} - 今日の天気</h2>
                 <p>${todayIcon} ${todayWeather}</p>
-                <p>気温: ${todayTemp}℃</p>
+                <p>最高気温: ${todayMaxTemp}℃ / 最低気温: ${todayMinTemp}℃</p>
             `;
             weatherContainer.appendChild(todayCard);
 
@@ -113,7 +115,7 @@
             tomorrowCard.innerHTML = `
                 <h2>${areaName} - 明日の天気</h2>
                 <p>${tomorrowIcon} ${tomorrowWeather}</p>
-                <p>気温: ${tomorrowTemp}℃</p>
+                <p>最高気温: ${tomorrowMaxTemp}℃ / 最低気温: ${tomorrowMinTemp}℃</p>
             `;
             weatherContainer.appendChild(tomorrowCard);
         }
