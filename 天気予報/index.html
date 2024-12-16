@@ -89,35 +89,23 @@
             const forecasts = data[0].timeSeries[0].areas[0];
             const temperatures = data[0].timeSeries[2].areas[0].temps; // 気温情報
 
-            const todayWeather = forecasts.weathers[0]; // 今日の天気
-            const tomorrowWeather = forecasts.weathers[1]; // 明日の天気
-            const todayMinTemp = temperatures[2]; // 今日の最低気温
-            const todayMaxTemp = temperatures[1]; // 今日の最高気温
-            const tomorrowMinTemp = temperatures[4]; // 明日の最低気温
-            const tomorrowMaxTemp = temperatures[3]; // 明日の最高気温
+            const weatherDays = ["今日", "明日", "明後日"];
 
-            const todayIcon = getWeatherIcon(todayWeather);
-            const tomorrowIcon = getWeatherIcon(tomorrowWeather);
+            for (let i = 0; i < 3; i++) {
+                const weather = forecasts.weathers[i]; // 各日の天気
+                const minTemp = temperatures[2 + i * 2]; // 各日の最低気温
+                const maxTemp = temperatures[1 + i * 2]; // 各日の最高気温
+                const weatherIcon = getWeatherIcon(weather);
 
-            // 今日の天気
-            const todayCard = document.createElement('div');
-            todayCard.className = 'weather-card';
-            todayCard.innerHTML = `
-                <h2>${areaName} - 今日の天気</h2>
-                <p>${todayIcon} ${todayWeather}</p>
-                <p>最高気温: ${todayMaxTemp}℃ / 最低気温: ${todayMinTemp}℃</p>
-            `;
-            weatherContainer.appendChild(todayCard);
-
-            // 明日の天気
-            const tomorrowCard = document.createElement('div');
-            tomorrowCard.className = 'weather-card';
-            tomorrowCard.innerHTML = `
-                <h2>${areaName} - 明日の天気</h2>
-                <p>${tomorrowIcon} ${tomorrowWeather}</p>
-                <p>最高気温: ${tomorrowMaxTemp}℃ / 最低気温: ${tomorrowMinTemp}℃</p>
-            `;
-            weatherContainer.appendChild(tomorrowCard);
+                const weatherCard = document.createElement('div');
+                weatherCard.className = 'weather-card';
+                weatherCard.innerHTML = `
+                    <h2>${areaName} - ${weatherDays[i]}の天気</h2>
+                    <p>${weatherIcon} ${weather}</p>
+                    <p>最高気温: ${maxTemp}℃ / 最低気温: ${minTemp}℃</p>
+                `;
+                weatherContainer.appendChild(weatherCard);
+            }
         }
 
         // 地域選択時のイベント
